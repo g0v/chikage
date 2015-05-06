@@ -18,8 +18,9 @@ app
     if req.params.id
       {id} = req.params
       err, reply <- client.get id
-      reply = JSON.parse reply if id.match /\.json$/
-      res.json reply
+      if id.match /\.json$/
+        then res.json JSON.parse reply
+        else res.send reply
     else res.json 'KAGE API'
   .put '/dump' (req, res) ->
     entry-count <- dump

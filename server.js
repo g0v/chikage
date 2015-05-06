@@ -16,9 +16,10 @@ app.get('/:id', function(req, res){
     id = req.params.id;
     return client.get(id, function(err, reply){
       if (id.match(/\.json$/)) {
-        reply = JSON.parse(reply);
+        return res.json(JSON.parse(reply));
+      } else {
+        return res.send(reply);
       }
-      return res.json(reply);
     });
   } else {
     return res.json('KAGE API');
