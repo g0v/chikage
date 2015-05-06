@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "build": "/usr/bin/env lsc -bc server.ls",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "caasi Huang",

@@ -4,11 +4,13 @@
 # original author: @yhsiang
 require! <[ express redis ]>
 
-client = redis.create-client!
+{ REDIS_IP, REDIS_PORT, PORT = 8080 } = process.env
+
+client = redis.create-client REDIS_PORT, REDIS_IP
 client.on 'error' -> console.log it
 
 app = express!
-PORT = process.env.PORT || 8080
+PORT = PORT || 8080
 
 
 app.get '/:id' (req, res) ->
