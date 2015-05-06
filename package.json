@@ -5,13 +5,16 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "/usr/bin/env lsc -bc server.ls",
+    "build": "/usr/bin/env lsc -bc *.ls",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "caasi Huang",
   "license": "GPLv3",
   "dependencies": {
     "express": "^4.12.3",
-    "redis": "^0.12.1"
+    "kage.json": "0.0.1",
+    "redis": "^0.12.1",
+    "split": "^0.3.3",
+    "tarball-extract": "0.0.3"
   }
 }
