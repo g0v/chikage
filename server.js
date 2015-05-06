@@ -3,12 +3,12 @@ var express, redis, ref$, REDIS_IP, REDIS_PORT, PORT, ref1$, client, app;
 express = require('express');
 redis = require('redis');
 ref$ = process.env, REDIS_IP = ref$.REDIS_IP, REDIS_PORT = ref$.REDIS_PORT, PORT = (ref1$ = ref$.PORT) != null ? ref1$ : 8080;
-client = redis.createClient(REDIS_PORT, REDIS_IP);
+client = redis.createClient(+REDIS_PORT, REDIS_IP);
 client.on('error', function(it){
   return console.log(it);
 });
 app = express();
-PORT = PORT || 8080;
+PORT = +PORT || 8080;
 app.get('/:id', function(req, res){
   var id;
   if (req.params.id) {
