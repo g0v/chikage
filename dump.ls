@@ -1,5 +1,6 @@
 #!/usr/bin/env lsc
 require! {
+  'fs'
   'path'
   'split'
   'kage.json/lib/utils': { parseLine }
