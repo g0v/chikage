@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "./node_modules/.bin/webpack-dev-server --hot",
     "build": "/usr/bin/env lsc -bc *.ls",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,8 +14,21 @@
   "dependencies": {
     "express": "^4.12.3",
     "kage.json": "0.0.1",
+    "react": "^0.13.3",
     "redis": "^0.12.1",
     "split": "^0.3.3",
     "tarball-extract": "0.0.3"
+  },
+  "devDependencies": {
+    "css-loader": "^0.14.4",
+    "livescript": "^1.4.0",
+    "livescript-loader": "^0.1.5",
+    "node-libs-browser": "^0.5.2",
+    "react": "^0.13.3",
+    "react-hot-loader": "^1.2.7",
+    "style-loader": "^0.12.3",
+    "stylus-loader": "^1.2.0",
+    "webpack": "^1.9.10",
+    "webpack-dev-server": "^1.9.0"
   }
 }
