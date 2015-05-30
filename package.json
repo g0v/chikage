@@ -12,11 +12,15 @@
   "author": "caasi Huang",
   "license": "GPLv3",
   "dependencies": {
+    "alt": "^0.16.7",
+    "bluebird": "^2.9.26",
     "express": "^4.12.3",
     "kage.json": "0.0.1",
     "react": "^0.13.3",
     "redis": "^0.12.1",
     "split": "^0.3.3",
+    "superagent": "^1.2.0",
+    "superagent-bluebird-promise": "^2.0.2",
     "tarball-extract": "0.0.3"
   },
   "devDependencies": {
