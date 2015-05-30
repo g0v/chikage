@@ -6,6 +6,9 @@ require! {
   './Buhin'
 }
 
+AltContainer = React.createFactory AltContainer
+Buhin = React.createFactory Buhin
+
 class App extends Component implements PureRenderMixin
   (@props) ->
   render: ~>

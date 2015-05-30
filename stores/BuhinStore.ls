@@ -3,6 +3,7 @@ require! {
   '../actions/BuhinActions'
 }
 
+
 class BuhinStore
   ->
     @bindActions BuhinActions
@@ -12,9 +13,9 @@ class BuhinStore
     @fetching = true
   didFetch: ->
     @fetching = false
-    console.log it
+    @data = it
   fetchFailed: ->
     @fetching = false
-    console.log it
+    console.error it
 
 module.exports = alt.createStore BuhinStore
