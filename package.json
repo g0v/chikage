@@ -24,6 +24,7 @@
     "tarball-extract": "0.0.3"
   },
   "devDependencies": {
+    "cors": "^2.7.1",
     "css-loader": "^0.14.4",
     "livescript": "^1.4.0",
     "livescript-loader": "^0.1.5",

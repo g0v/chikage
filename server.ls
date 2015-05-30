@@ -2,7 +2,7 @@
 # server.ls
 ##
 # original author: @yhsiang
-require! <[ express redis ./dump ]>
+require! <[ express redis cors ./dump ]>
 
 { REDIS_IP, REDIS_PORT, PORT = 8080 } = process.env
 console.log "connect to #REDIS_IP:#REDIS_PORT"
@@ -14,6 +14,7 @@ app = express!
 
 
 app
+  .use cors!
   .get '/:id' (req, res) ->
     if req.params.id
       {id} = req.params
