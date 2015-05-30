@@ -4,7 +4,10 @@ require! {
   './lib/App'
 }
 
-BuhinActions.fetch \u840c
+/\/#\/(.*)$/.test location.href
+id = RegExp.$1 || \u840c
+
+BuhinActions.fetch id
 
 App = React.createFactory App
 React.render do
