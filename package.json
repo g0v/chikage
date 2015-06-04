@@ -17,6 +17,7 @@
     "cors": "^2.7.1",
     "express": "^4.12.3",
     "kage.json": "0.0.1",
+    "normalize.css": "^3.0.3",
     "react": "^0.13.3",
     "redis": "^0.12.1",
     "split": "^0.3.3",
@@ -25,7 +26,9 @@
     "tarball-extract": "0.0.3"
   },
   "devDependencies": {
+    "autoprefixer-loader": "^2.0.0",
     "css-loader": "^0.14.4",
+    "extract-text-webpack-plugin": "^0.8.1",
     "livescript": "^1.4.0",
     "livescript-loader": "^0.1.5",
     "node-libs-browser": "^0.5.2",

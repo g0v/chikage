@@ -2,6 +2,7 @@ require! {
   'react': React
   './actions/BuhinActions'
   './lib/App'
+  'normalize.css'
 }
 
 /\/#\/(.*)$/.test location.href

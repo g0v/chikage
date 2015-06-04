@@ -1,5 +1,8 @@
-require! webpack
-require! path
+require! {
+  'webpack'
+  'path'
+  #'extract-text-webpack-plugin': ExtractTextPlugin
+}
 
 module.exports =
   devtool: 'eval-source-map'
@@ -14,6 +17,7 @@ module.exports =
   plugins:
     * new webpack.HotModuleReplacementPlugin
     * new webpack.NoErrorsPlugin
+    #* new ExtractTextPlugin 'client.css'
     * new webpack.DefinePlugin do
         __PRODUCTION__: JSON.stringify process.env.NODE_ENV is \production
   resolve:
@@ -23,6 +27,8 @@ module.exports =
       * test: /\.ls$/
         loaders: <[react-hot livescript]>
         excludes: [/node_modules/]
-      * test: /\.styl/
-        loaders: <[style css stylus]>
+      * test: /\.css$/
+        loaders: <[style css autoprefixer]>
+      * test: /\.styl$/
+        loaders: <[style css autoprefixer stylus]>
 

@@ -23,7 +23,7 @@ const compose-buhin = ({
           style =
             stroke: \black
             stroke-width: 1
-          line { key, x1, y1, x2, y2, style }
+          line { key, x1 , y1, x2, y2, style }
         | 'vert-slash' =>
           [
             { x: x0, y: y0 },
@@ -56,7 +56,7 @@ class Buhin extends Component
   (@props) ->
   render: ~>
     {
-      className = '', children = [],
+      children = [],
       width, height,
       id, related, data
     } = @props
