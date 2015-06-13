@@ -26,7 +26,7 @@ const fetchTree = (client, id, done) ->
     if err then return done err
     op <<< body
     ++count
-    if count is to-fetch.length then done void, op
+    if count is to-fetch.length then done void, buhin
 
 app = express!
 app
