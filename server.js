@@ -12,8 +12,8 @@ client.on('error', function(it){
   return console.log(it);
 });
 fetchTree = function(client, id, done){
-  return client.get(id + ".json", function(err, reply){
-    var toFetch, count, buhin, i$, len$, op, results$ = [];
+  client.get(id + ".json", function(err, reply){
+    var toFetch, count, buhin, i$, len$, op;
     if (err) {
       return done(err);
     }
@@ -30,9 +30,11 @@ fetchTree = function(client, id, done){
     buhin.data);
     for (i$ = 0, len$ = toFetch.length; i$ < len$; ++i$) {
       op = toFetch[i$];
-      results$.push(fetchTree(client, op.src, fn$));
+      fetchTree(client, op.src, fn$);
     }
-    return results$;
+    if (toFetch.length === 0) {
+      return done(void 8, buhin);
+    }
     function fn$(err, body){
       if (err) {
         return done(err);

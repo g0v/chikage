@@ -13,7 +13,7 @@ console.log "connect to #REDIS_IP:#REDIS_PORT"
 client = redis.create-client +REDIS_PORT, REDIS_IP
 client.on 'error' -> console.log it
 
-const fetchTree = (client, id, done) ->
+const fetchTree = (client, id, done) !->
   err, reply <- client.get "#id.json"
   if err then return done err
   to-fetch = []
@@ -27,6 +27,7 @@ const fetchTree = (client, id, done) ->
     op <<< body
     ++count
     if count is to-fetch.length then done void, buhin
+  if to-fetch.length is 0 then done void, buhin
 
 app = express!
 app
