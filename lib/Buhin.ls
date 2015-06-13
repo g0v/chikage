@@ -5,6 +5,7 @@ require! {
 
 const buhin-width  = 200
 const buhin-height = 200
+const vector-effect = 'non-scaling-stroke'
 const compose-buhin = ({
   id, src,
   x = 0, y = 0,
@@ -23,6 +24,7 @@ const compose-buhin = ({
           style =
             stroke: \black
             stroke-width: 1
+            vector-effect: vector-effect
           line { key, x1 , y1, x2, y2, style }
         | 'vert-slash' =>
           [
@@ -35,6 +37,7 @@ const compose-buhin = ({
             stroke: \black
             stroke-width: 1
             fill: \transparent
+            vector-effect: vector-effect
           path do
             key: key
             d: "M#x0 #y0 C #x1 #y1, #x2 #y2, #x3 #y3"
