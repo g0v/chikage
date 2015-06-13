@@ -13,7 +13,7 @@ client.on('error', function(it){
 });
 fetchTree = function(client, id, done){
   client.get(id + ".json", function(err, reply){
-    var toFetch, count, buhin, i$, len$, op;
+    var toFetch, count, buhin, i$, len$;
     if (err) {
       return done(err);
     }
@@ -29,21 +29,22 @@ fetchTree = function(client, id, done){
     }, [])(
     buhin.data);
     for (i$ = 0, len$ = toFetch.length; i$ < len$; ++i$) {
-      op = toFetch[i$];
-      fetchTree(client, op.src, fn$);
+      (fn$.call(this, toFetch[i$]));
     }
     if (toFetch.length === 0) {
       return done(void 8, buhin);
     }
-    function fn$(err, body){
-      if (err) {
-        return done(err);
-      }
-      import$(op, body);
-      ++count;
-      if (count === toFetch.length) {
-        return done(void 8, buhin);
-      }
+    function fn$(op){
+      fetchTree(client, op.src, function(err, body){
+        if (err) {
+          return done(err);
+        }
+        import$(op, body);
+        ++count;
+        if (count === toFetch.length) {
+          return done(void 8, buhin);
+        }
+      });
     }
   });
 };

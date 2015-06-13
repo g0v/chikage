@@ -21,7 +21,7 @@ const fetchTree = (client, id, done) !->
   buhin = JSON.parse reply
   to-fetch = buhin.data
     |> fold ((acc, op) -> if op.type is 'link' then acc ++ [op] else acc), []
-  for op in to-fetch
+  for let op in to-fetch
     err, body <- fetchTree client, op.src
     if err then return done err
     op <<< body
