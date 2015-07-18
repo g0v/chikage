@@ -23,7 +23,11 @@ dump = (done) ->
     fs.mkdirSync jsonPath
 
   url = 'http://glyphwiki.org/dump.tar.gz'
-  err, result <- tarball.extractTarballDownload url, 'dump.tar.gz', "#{path.resolve config.rootPath, 'data'}", {}
+  err, result <- tarball.extractTarballDownload do
+    url
+    "#{path.resolve config.rootPath, 'dump.tar.gz'}"
+    "#{path.resolve config.rootPath, 'data'}"
+    {}
   fs.createReadStream path.resolve config.rootPath, 'data', 'dump_newest_only.txt'
     .pipe split!
     .on \data (line) ->
