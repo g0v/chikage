@@ -9,7 +9,7 @@ require! {
 }
 
 const config = rootPath: path.resolve __dirname
-const { REDIS_IP, REDIS_PORT } = process.env
+const { REDIS_IP = '127.0.0.1', REDIS_PORT = 6379 } = process.env
 
 dump = (done) ->
   client = redis.create-client +REDIS_PORT, REDIS_IP
@@ -17,10 +17,6 @@ dump = (done) ->
 
   glyph-count = 0
   count = 0
-
-  jsonPath = path.resolve config.rootPath, 'json'
-  if not fs.existsSync jsonPath
-    fs.mkdirSync jsonPath
 
   url = 'http://glyphwiki.org/dump.tar.gz'
   err, result <- tarball.extractTarballDownload do

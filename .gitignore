@@ -3,4 +3,5 @@ data/
 npm-debug.log
 dump.tar.gz
 *.swp
+*.rdb
 .DS_Store

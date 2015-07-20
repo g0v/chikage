@@ -22,9 +22,12 @@ client.on 'error' ->
 cache = {}
 const get = (gid) -> cache[gid] or= new Promise (resolve, reject) ->
   err, reply <- client.get gid
-  unless err
-    then resolve reply
-    else reject err
+  if err then
+    reject err
+  else if not reply then
+    reject new Error "#gid not found"
+  else
+    resolve reply
 
 const fetchTree = (gid) ->
   get "#gid.json"
@@ -45,7 +48,7 @@ const fetchExploded = (gid) ->
       ks = it.split \$
       ps = ks
         |> map ->
-          if re = /99:0:0:(\d+):(\d+):(\d+):(\d+):(.+)/exec it then
+          if re = /99:0:0:(\d+):(\d+):(\d+):(\d+):([^:]+)/exec it then
             [, x, y, w, h, part] = re
             fetchExploded part
         |> filter id
@@ -78,14 +81,19 @@ app
     all [ks, vs]
       .then ([ks, vs]) -> lists-to-obj ks, vs
       .then  -> res.json it
-      .catch -> res.status 500 .json it
+      .catch ->
+        console.error it
+        res.status 500 .json it
   .get '/:id' (req, res) ->
     if req.params.id
       { id } = req.params
+      id = decodeURI id
       if id.match /(.*)\.json$/ then
         fetchTree RegExp.$1
           .then  -> res.json it
-          .catch -> res.status 500 .json it
+          .catch ->
+            console.error it
+            res.status 500 .json it
       else
         get id
           .then  -> res.send it
