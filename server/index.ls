@@ -48,7 +48,7 @@ const fetchExploded = (gid) ->
       ks = it.split \$
       ps = ks
         |> map ->
-          if re = /99:0:0:(\d+):(\d+):(\d+):(\d+):([^:]+)/exec it then
+          if re = /99:0:0:(-?\d+):(-?\d+):(\d+):(\d+):([^:@]+)/exec it then
             [, x, y, w, h, part] = re
             fetchExploded part
         |> filter id
@@ -63,7 +63,7 @@ app
   .use body-parser.urlencoded extended: true
   .use method-override!
   .use express.static \public
-  .use morgan \dev
+  .use morgan \common
   .use (req, res, next) ->
     res.set \Connection \close
     next!
