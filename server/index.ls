@@ -3,7 +3,7 @@
 # original author: @yhsiang
 require! <[ express redis cors body-parser method-override morgan punycode ./dump ]>
 require! {
-  'prelude-ls': { id, fold, map, filter, flatten, unique, lists-to-obj }
+  'prelude-ls': { id, fold, map, filter, flatten, unique, obj-to-lists, lists-to-obj, is-type }
   'bluebird': { all }:Promise
 }
 
@@ -18,6 +18,14 @@ client.on 'error' ->
     get: (id, done) ->
       id .= replace /\.json/, ''
       done void, JSON.stringify data: { id, related: id, data: [], message }
+
+const peek = ->
+  console.log JSON.stringify it,, 2
+  it
+
+const cry = ->
+  console.error it
+  it
 
 cache = {}
 const get = (gid) -> cache[gid] or= new Promise (resolve, reject) ->
@@ -42,19 +50,38 @@ const fetchTree = (gid) ->
           .then -> op <<< it
       all ps .then -> buhin
 
-const fetchExploded = (gid) ->
+const every = ->
+  | it.then               => it.then every
+  | it |> is-type \String => Promise.resolve it
+  | it |> is-type \Array  => it |> map every |> all
+  | otherwise             =>
+    [ks, vs] = obj-to-lists it
+    every vs
+      .then lists-to-obj ks
+
+const fetchKageTree = (gid) ->
   get gid
     .then ->
-      ks = it.split \$
-      ps = ks
-        |> map ->
+      id: gid
+      data: it
+      children: Promise.resolve it.split \$
+        .then map ->
           if re = /99:0:0:(-?\d+):(-?\d+):(\d+):(\d+):([^:@]+)/exec it then
             [, x, y, w, h, part] = re
-            fetchExploded part
-        |> filter id
-      [gid] ++ ps
-    .then all
-    .then flatten
+            fetchKageTree part
+        .then all
+        .then filter id
+
+const flattenTree = (tree) ->
+  fold do
+    (acc, child) -> acc <<< flattenTree child
+    "#{tree.id}": tree.data
+    tree.children
+
+const fetchExploded = (gid) ->
+  fetchKageTree gid
+    .then every
+    .then flattenTree
 
 app = express!
 app
@@ -67,23 +94,23 @@ app
   .use (req, res, next) ->
     res.set \Connection \close
     next!
+  .get '/forest' (req, res) ->
+    inputs = punycode.ucs2.decode req.query.inputs
+    Promise.resolve inputs
+      .then map -> "u#{it.toString 16}"
+      .then map fetchKageTree
+      .then every
+      .then  -> res.json it
+      .catch -> res.status 500 .json cry it
   .get '/exploded' (req, res) ->
     inputs = punycode.ucs2.decode req.query.inputs
-    ps = inputs
-      |> map -> "u#{it.toString 16}"
-      |> map fetchExploded
-    ks = all ps
-      .then flatten
-      .then unique
-    vs = ks
-      .then map get
+    Promise.resolve inputs
+      .then map -> "u#{it.toString 16}"
+      .then map fetchExploded
       .then all
-    all [ks, vs]
-      .then ([ks, vs]) -> lists-to-obj ks, vs
+      .then fold (<<<), {}
       .then  -> res.json it
-      .catch ->
-        console.error it
-        res.status 500 .json it
+      .catch -> res.status 500 .json cry it
   .get '/:id' (req, res) ->
     if req.params.id
       { id } = req.params
@@ -91,9 +118,7 @@ app
       if id.match /(.*)\.json$/ then
         fetchTree RegExp.$1
           .then  -> res.json it
-          .catch ->
-            console.error it
-            res.status 500 .json it
+          .catch -> res.status 500 .json cry it
       else
         get id
           .then  -> res.send it
