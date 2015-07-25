@@ -66,8 +66,8 @@ const fetchKageTree = (gid) ->
       data: it
       children: Promise.resolve it.split \$
         .then map ->
-          if re = /99:0:0:(-?\d+):(-?\d+):(\d+):(\d+):([^:@]+)/exec it then
-            [, x, y, w, h, part] = re
+          if re = /99:(-?\d+):(-?\d+):(-?\d+):(-?\d+):(\d+):(\d+):([^:@]+)/exec it then
+            [, u, v, x, y, w, h, part] = re
             fetchKageTree part
         .then all
         .then filter id
