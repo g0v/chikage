@@ -24,6 +24,7 @@ dump = (done) ->
     "#{path.resolve config.rootPath, 'dump.tar.gz'}"
     "#{path.resolve config.rootPath, 'data'}"
     {}
+  parents = {}
   fs.createReadStream path.resolve config.rootPath, 'data', 'dump_newest_only.txt'
     .pipe split!
     .on \data (line) ->
@@ -37,6 +38,9 @@ dump = (done) ->
         total = +RegExp.$1
         if total isnt count
           throw new Error "glyph number mismatched: #count/#total"
+        # save parents
+        for own id, ps of parents
+          client.set "#{id}.parents", (JSON.stringify ps)
         client.quit!
         return done count
 
@@ -45,8 +49,14 @@ dump = (done) ->
 
       if not id then return
 
+      # save kage node
       client.set "#{id}", raw
       client.set "#{id}.json", (JSON.stringify glyph)
+
+      # extract parents
+      for node in glyph.data when node.type is \link
+        parent = parents[node.src] ?= []
+        parent.push glyph.id
 
       ++count
 

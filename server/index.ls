@@ -111,6 +111,15 @@ app
       .then fold (<<<), {}
       .then  -> res.json it
       .catch -> res.status 500 .json cry it
+  .get '/parents/:id' (req, res) ->
+    if req.params.id
+      { id } = req.params
+      id = decodeURI id
+      get "#id.parents"
+        .then  -> res.send it
+        .catch ->
+          console.log it
+          res.sendStatus 404
   .get '/:id' (req, res) ->
     if req.params.id
       { id } = req.params
